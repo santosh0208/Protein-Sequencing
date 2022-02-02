@@ -134,7 +134,11 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def combineProteins(proteinList):
-    return
+    proteinlist = []
+    for list in proteinList:
+        for proteins in list:
+            proteinlist.append(proteins)
+    return proteinlist
 
 
 '''
