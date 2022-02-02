@@ -87,7 +87,21 @@ Parameters: str ; str
 Returns: 2D list of strs
 '''
 def synthesizeProteins(dnaFilename, codonFilename):
-    return
+    rnalist = readFile(dnaFilename)
+    proteinlist = makeCodonDictionary(codonFilename)
+    totalproteinlist = []
+    j = 0
+    unusedltrs = 0
+    while j<len(rnalist) :
+        word = rnalist[j:j+3]
+        if word == "ATG":
+            rna = dnaToRna(rnalist, j)
+            totalproteinlist.append(generateProtein(rna,proteinlist))
+            j = j+3*len(rna)
+        else:
+            unusedltrs += 1
+            j += 1      
+    return totalproteinlist
 
 
 def runWeek1():
