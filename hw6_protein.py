@@ -164,7 +164,33 @@ Parameters: 2D list of strs ; 2D list of strs ; float
 Returns: 2D list of values
 '''
 def findAminoAcidDifferences(proteinList1, proteinList2, cutoff):
-    return
+    aminofreqlist =[]
+    totalcount1 = len(combineProteins(proteinList1))
+    totalcount2 = len(combineProteins(proteinList2))
+    word = combineProteins(proteinList1) 
+    word1 = combineProteins(proteinList2)
+    count = aminoAcidDictionary(word)
+    count1 = aminoAcidDictionary(word1)
+    totalwrd = word + word1
+    totalwrd = list(set(totalwrd))
+    for i in totalwrd:
+        freq1 = 0 
+        freq2 = 0
+        if i != "Start" and i != "Stop":
+            if i not in aminofreqlist:
+                if i in word and i in word1:
+                    freq1 = count[i]/totalcount1
+                    freq2 = count1[i]/totalcount2
+                elif i in word and i not in word1:
+                    freq1 = count[i]/totalcount1
+                    freq2 = 0
+                elif i not in word and i in word1:
+                    freq1 = 0 
+                    freq2 = count1[i]/totalcount2
+                freqdiff = freq1-freq2
+                if freqdiff > cutoff or freqdiff < -cutoff:
+                    aminofreqlist.append([i,freq1,freq2])
+    return aminofreqlist
 
 
 '''
