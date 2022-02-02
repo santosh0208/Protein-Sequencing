@@ -295,17 +295,16 @@ if __name__ == "__main__":
     runWeek1()
 
     ## Uncomment these for Week 2 ##
-    """
+
     print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
     test.week2Tests()
     print("\n" + "#"*15 + " WEEK 2 OUTPUT " + "#" * 15 + "\n")
     runWeek2()
-    """
+
 
     ## Uncomment these for Week 3 ##
-    """
-    print("\n" + "#"*15 + " WEEK 3 TESTS " +  "#" * 16 + "\n")
-    test.week3Tests()
-    print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
-    runFullProgram()
-    """
+
+    # print("\n" + "#"*15 + " WEEK 3 TESTS " +  "#" * 16 + "\n")
+    # test.week3Tests()
+    # print("\n" + "#"*15 + " WEEK 3 OUTPUT " + "#" * 15 + "\n")
+    # runFullProgram()
