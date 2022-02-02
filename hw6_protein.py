@@ -17,7 +17,12 @@ Parameters: str
 Returns: str
 '''
 def readFile(filename):
-    return
+    file= open(filename,"r")
+    a=file.read()
+    str=""
+    for line in a.splitlines():
+        str= str+line
+    return str
 
 
 '''
@@ -27,7 +32,17 @@ Parameters: str ; int
 Returns: list of strs
 '''
 def dnaToRna(dna, startIndex):
-    return
+    condonlist = []
+    var = ["UGA","UAG","UAA"]
+    for word in range(startIndex,len(dna),3):
+        dna = dna.replace("T","U")
+        condon = dna[word:word+3]
+        if condon not in var:
+            condonlist.append(condon)
+        else:
+            condonlist.append(condon)
+            break
+    return condonlist 
 
 
 '''
@@ -38,7 +53,14 @@ Returns: dict mapping strs to strs
 '''
 def makeCodonDictionary(filename):
     import json
-    return
+    File = open(filename,"r")
+    protns = json.load(File)
+    codondict= {}
+    for key in protns:
+        for values in protns[key]:
+            values = values.replace("T","U")
+            codondict[values] = key
+    return codondict
 
 
 '''
@@ -48,7 +70,14 @@ Parameters: list of strs ; dict mapping strs to strs
 Returns: list of strs
 '''
 def generateProtein(codons, codonD):
-    return
+    proteinlist = []
+    for rna in codons:
+        for rnaproteins in codonD:
+            if rna == rnaproteins:
+                proteinlist.append(codonD[rnaproteins])
+                if proteinlist[0] == "Met":
+                    proteinlist[0] = "Start"
+    return proteinlist 
 
 
 '''
@@ -58,7 +87,21 @@ Parameters: str ; str
 Returns: 2D list of strs
 '''
 def synthesizeProteins(dnaFilename, codonFilename):
-    return
+    rnalist = readFile(dnaFilename)
+    proteinlist = makeCodonDictionary(codonFilename)
+    totalproteinlist = []
+    j = 0
+    unusedltrs = 0
+    while j<len(rnalist) :
+        word = rnalist[j:j+3]
+        if word == "ATG":
+            rna = dnaToRna(rnalist, j)
+            totalproteinlist.append(generateProtein(rna,proteinlist))
+            j = j+3*len(rna)
+        else:
+            unusedltrs += 1
+            j += 1      
+    return totalproteinlist
 
 
 def runWeek1():
@@ -77,8 +120,12 @@ Parameters: 2D list of strs ; 2D list of strs
 Returns: 2D list of strs
 '''
 def commonProteins(proteinList1, proteinList2):
-    return
-
+    commonprotein = []
+    for protein1 in proteinList1:
+        for protein2 in proteinList2:
+            if protein1 == protein2 and protein1 not in commonprotein:
+                commonprotein.append(protein1)
+    return commonprotein
 
 '''
 combineProteins(proteinList)
@@ -87,7 +134,11 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def combineProteins(proteinList):
-    return
+    proteinlist = []
+    for list in proteinList:
+        for proteins in list:
+            proteinlist.append(proteins)
+    return proteinlist
 
 
 '''
@@ -97,7 +148,13 @@ Parameters: list of strs
 Returns: dict mapping strs to ints
 '''
 def aminoAcidDictionary(aaList):
-    return
+    aminoaciddict = {}
+    for word in aaList:
+        if word not in aminoaciddict:
+            aminoaciddict[word] = 0
+        if word in aminoaciddict:
+            aminoaciddict[word] += 1
+    return aminoaciddict 
 
 
 '''
@@ -107,7 +164,33 @@ Parameters: 2D list of strs ; 2D list of strs ; float
 Returns: 2D list of values
 '''
 def findAminoAcidDifferences(proteinList1, proteinList2, cutoff):
-    return
+    aminofreqlist =[]
+    totalcount1 = len(combineProteins(proteinList1))
+    totalcount2 = len(combineProteins(proteinList2))
+    word = combineProteins(proteinList1) 
+    word1 = combineProteins(proteinList2)
+    count = aminoAcidDictionary(word)
+    count1 = aminoAcidDictionary(word1)
+    totalwrd = word + word1
+    totalwrd = list(set(totalwrd))
+    for i in totalwrd:
+        freq1 = 0 
+        freq2 = 0
+        if i != "Start" and i != "Stop":
+            if i not in aminofreqlist:
+                if i in word and i in word1:
+                    freq1 = count[i]/totalcount1
+                    freq2 = count1[i]/totalcount2
+                elif i in word and i not in word1:
+                    freq1 = count[i]/totalcount1
+                    freq2 = 0
+                elif i not in word and i in word1:
+                    freq1 = 0 
+                    freq2 = count1[i]/totalcount2
+                freqdiff = freq1-freq2
+                if freqdiff > cutoff or freqdiff < -cutoff:
+                    aminofreqlist.append([i,freq1,freq2])
+    return aminofreqlist
 
 
 '''
