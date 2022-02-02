@@ -17,7 +17,12 @@ Parameters: str
 Returns: str
 '''
 def readFile(filename):
-    return
+    file= open(filename,"r")
+    a=file.read()
+    str=""
+    for line in a.splitlines():
+        str= str+line
+    return str
 
 
 '''
@@ -27,7 +32,17 @@ Parameters: str ; int
 Returns: list of strs
 '''
 def dnaToRna(dna, startIndex):
-    return
+    condonlist = []
+    var = ["UGA","UAG","UAA"]
+    for word in range(startIndex,len(dna),3):
+        dna = dna.replace("T","U")
+        condon = dna[word:word+3]
+        if condon not in var:
+            condonlist.append(condon)
+        else:
+            condonlist.append(condon)
+            break
+    return condonlist 
 
 
 '''
@@ -38,7 +53,14 @@ Returns: dict mapping strs to strs
 '''
 def makeCodonDictionary(filename):
     import json
-    return
+    File = open(filename,"r")
+    protns = json.load(File)
+    codondict= {}
+    for key in protns:
+        for values in protns[key]:
+            values = values.replace("T","U")
+            codondict[values] = key
+    return codondict
 
 
 '''
@@ -48,7 +70,14 @@ Parameters: list of strs ; dict mapping strs to strs
 Returns: list of strs
 '''
 def generateProtein(codons, codonD):
-    return
+    proteinlist = []
+    for rna in codons:
+        for rnaproteins in codonD:
+            if rna == rnaproteins:
+                proteinlist.append(codonD[rnaproteins])
+                if proteinlist[0] == "Met":
+                    proteinlist[0] = "Start"
+    return proteinlist 
 
 
 '''
@@ -58,7 +87,21 @@ Parameters: str ; str
 Returns: 2D list of strs
 '''
 def synthesizeProteins(dnaFilename, codonFilename):
-    return
+    rnalist = readFile(dnaFilename)
+    proteinlist = makeCodonDictionary(codonFilename)
+    totalproteinlist = []
+    j = 0
+    unusedltrs = 0
+    while j<len(rnalist) :
+        word = rnalist[j:j+3]
+        if word == "ATG":
+            rna = dnaToRna(rnalist, j)
+            totalproteinlist.append(generateProtein(rna,proteinlist))
+            j = j+3*len(rna)
+        else:
+            unusedltrs += 1
+            j += 1      
+    return totalproteinlist
 
 
 def runWeek1():
