@@ -218,7 +218,8 @@ def displayTextResults(commonalities, differences):
         wrd = b[0]
         seq1 = round(b[1]*100,2)
         seq2 = round(b[2]*100,2)
-        print(f"{wrd}:{seq1}% in Seq1, {seq2}% in seq2")
+        print(f"{wrd}:{seq1}% in Seq1, {seq2}% in seq2") 
+
     return
 
 
