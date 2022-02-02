@@ -241,7 +241,13 @@ Parameters: 2D list of strs ; 2D list of strs
 Returns: list of strs
 '''
 def makeAminoAcidLabels(proteinList1, proteinList2):
-    return
+    labels = []
+    word = combineProteins(proteinList1) + combineProteins(proteinList2)
+    for j in word:
+        if j not in labels:
+            labels.append(j)
+    totallabels = sorted(labels)
+    return totallabels
 
 
 '''
